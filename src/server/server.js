@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import http from 'http';
 import WebSocket from 'ws';
@@ -18,7 +19,9 @@ class Server {
 
     // Set up middleware (e.g., static file serving)
     setupMiddleware() {
-        this.app.use(express.static('src/client'));
+        const staticPath = path.resolve('src/client');
+        console.log(`Serving static files from: ${staticPath}`);
+        this.app.use(express.static(staticPath));
     }
 
     // Set up WebSocket event handlers

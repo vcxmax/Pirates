@@ -1,22 +1,24 @@
 {
-  "name": "multiplayer-game",
+  "name": "pirates",
   "version": "1.0.0",
-  "description": "A multiplayer game project using JavaScript.",
+  "description": "A multiplayer game with WebSocket support",
   "main": "src/server/server.js",
+  "type": "module",
   "scripts": {
     "start": "node src/server/server.js",
-    "client": "live-server src/client"
+    "lint": "eslint ."
   },
   "dependencies": {
-    "express": "^4.21.2",
-    "ws": "^7.5.3"
+    "express": "^4.18.2",
+    "ws": "^7.5.10"
   },
   "devDependencies": {
-    "@eslint/js": "^9.26.0",
-    "eslint": "^9.26.0",
-    "globals": "^16.0.0",
-    "live-server": "^1.2.0"
+    "eslint": "^8.0.0"
   },
-  "author": "Your Name",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [],
+  "author": "",
   "license": "MIT"
 }

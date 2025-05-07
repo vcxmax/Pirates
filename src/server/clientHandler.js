@@ -1,4 +1,5 @@
 import MessageRegister from "./network/messageRegister.js";
+import Chat from "./chat.js";
 
 class ClientHandler {
     constructor(server, ws) {
@@ -8,6 +9,7 @@ class ClientHandler {
         console.log('New client connected');
 
         this.initializeWebSocketEvents();
+        Chat.getInstance().addClient(this); // Add client to chat instance
     }
 
     // Set up WebSocket event handlers
@@ -32,23 +34,19 @@ class ClientHandler {
     receiveMessage(message) {
         try {
             // Parse the incoming message as JSON
-            const jsonMessage = JSON.parse(message);
+            const jsonMessage = JSON.parse(message); // Use `message` directly
             console.log('Received message:', jsonMessage);
 
             if ('id' in jsonMessage && Number.isInteger(jsonMessage.id)) {
                 const messageId = jsonMessage.id;
                 const messageHandler = MessageRegister.getInstance().getMessage(messageId);
                 if (messageHandler) {
-                    try {
-                        messageHandler.read(jsonMessage);
-                    } catch (error) {
-                        console.error('Failed to read message:', error);
-                    }
+                    messageHandler.read(jsonMessage);
                 } else {
                     console.error('No handler found for message ID:', messageId);
                 }
             } else {
-                console.error('Message does not have an ID:', message);
+                console.error('Message does not have an ID:', jsonMessage);
             }
         } catch (error) {
             console.error('Failed to parse message:', error);

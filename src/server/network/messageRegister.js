@@ -1,4 +1,4 @@
-import MessageChat from "./messages/messageChat";
+import MessageChat from "./messages/messageChat.js";
 
 class MessageRegister {
     constructor() {

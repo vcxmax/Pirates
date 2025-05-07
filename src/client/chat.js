@@ -1,31 +1,39 @@
-// Connect to the WebSocket server
-const ws = new WebSocket(`ws://${window.location.host}`);
+import MessageChat from './network/messages/messageChat.js';
 
-// DOM elements
-const chat = document.getElementById('chat');
-const messageInput = document.getElementById('message');
-const sendButton = document.getElementById('send');
-
-// Append a message to the chat
-export const appendMessage = (message) => {
-    const messageElement = document.createElement('div');
-    messageElement.textContent = message;
-    chat.appendChild(messageElement);
-    chat.scrollTop = chat.scrollHeight; // Auto-scroll to the latest message
-};
-
-// Send a message when the "Send" button is clicked
-sendButton.addEventListener('click', () => {
-    const message = messageInput.value.trim();
-    if (message) {
-        ws.send(JSON.stringify({ type: 'chat', message })); // Send as JSON
-        messageInput.value = ''; // Clear the input field
+class Chat {
+    constructor(client) {
+        this.chat = document.getElementById('chat');
+        this.messageInput = document.getElementById('message');
+        this.sendButton = document.getElementById('send');
+        this.client = client;
+        this.attachEventListeners();
     }
-});
 
-// Send a message when the "Enter" key is pressed
-messageInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-        sendButton.click();
+    // Attach event listeners for input and button
+    attachEventListeners() {
+        this.sendButton.addEventListener('click', () => this.handleSendMessage());
+        this.messageInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                this.handleSendMessage();
+            }
+        });
     }
-});
+
+    // Handle sending a message
+    handleSendMessage() {
+        const message = this.messageInput.value.trim();
+        if (message) {
+            this.client.sendMessage({ id: MessageChat.id, username: this.client.username, text: message });
+            this.messageInput.value = ''; // Clear the input field
+        }
+    }
+
+    appendMessage(username, text) {
+        const messageElement = document.createElement('div');
+        messageElement.textContent = username + ': ' + text;
+        this.chat.appendChild(messageElement);
+        this.chat.scrollTop = this.chat.scrollHeight; // Auto-scroll to the latest message
+    }
+}
+
+export default Chat;

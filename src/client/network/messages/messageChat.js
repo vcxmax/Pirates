@@ -1,14 +1,15 @@
 import Message from '../message.js';
-import { appendMessage } from '../../chat.js';
 
 class MessageChat extends Message {
+
+    static id = 1;
+
     read(message, client) {
-        const chatText = message.text;
-        appendMessage(chatText);
+        client.chat.appendMessage(message.username,  message.text);
     }
 
     getId() {
-        return 'chat';
+        return MessageChat.id;
     }
 }
 

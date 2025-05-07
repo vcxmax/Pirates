@@ -22,9 +22,9 @@ class Chat {
         this.clients.delete(client);
     }
 
-    broadcastMessage(message) {
+    sendMessage(message) {
         for (const client of this.clients) {
-            client.send(message);
+            client.sendMessage(message);
         }
     }
 }

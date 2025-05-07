@@ -5,12 +5,13 @@ class MessageRegister {
         if (MessageRegister.instance) {
             return MessageRegister.instance;
         }
+        MessageRegister.instance = this;
         this.#registerMessages();
     }
 
     #registerMessages() {
         this.messages = new Map();
-        this.registerMessage(new MessageChat())
+        this.registerMessage(new MessageChat());
         // Add other messages here
     }
 
