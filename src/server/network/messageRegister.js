@@ -1,4 +1,5 @@
 import MessageChat from "./messages/messageChat.js";
+import MessageAuth from "./messages/messageAuth.js";
 
 class MessageRegister {
     constructor() {
@@ -10,6 +11,7 @@ class MessageRegister {
 
     #registerMessages() {
         this.messages = new Map();
+        this.registerMessage(new MessageAuth())
         this.registerMessage(new MessageChat())
         // Add other messages here
     }

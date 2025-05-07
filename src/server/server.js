@@ -3,6 +3,7 @@ import express from 'express';
 import http from 'http';
 import WebSocket from 'ws';
 import ClientHandler from './clientHandler.js';
+import AuthHandler from './authHandler.js';
 
 class Server {
     constructor(port = 3000, host = '0.0.0.0') {
@@ -12,6 +13,9 @@ class Server {
         this.app = express();
         this.server = http.createServer(this.app);
         this.wss = new WebSocket.Server({ server: this.server });
+
+        this.authHandler = new AuthHandler();
+        this.authHandler.initialize();
 
         this.setupMiddleware();
         this.handleConnections();

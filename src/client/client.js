@@ -1,4 +1,5 @@
 import MessageRegister from "./network/messageRegister.js";
+import AuthUI from "./authUI.js"; // Import the AuthUI class
 import Chat from "./chat.js";
 
 class Client {
@@ -12,6 +13,11 @@ class Client {
         this.socket.addEventListener('error', (error) => this.onError(error));
         this.socket.addEventListener('close', () => this.onClose());
         this.chat = new Chat(this); // Integrate with Chat class
+
+        // Initialize the AuthUI
+        document.addEventListener("DOMContentLoaded", () => {
+            this.authUI = new AuthUI(this); // Pass the client instance to AuthUI
+        });
     }
 
     // Handle WebSocket connection open

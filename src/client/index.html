@@ -7,16 +7,30 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="game-container">
-        <h1>Welcome to the Multiplayer Game!</h1>
-        <div id="game-area"></div>
-        <div id="player-info"></div>
-        <button id="start-game">Start Game</button>
+    <!-- Login/Register Screen -->
+    <div id="auth-container">
+        <div id="auth-box">
+            <h1 id="auth-title">Login</h1>
+            <form id="auth-form">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="Username" required />
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password" required />
+                </div>
+                <div class="input-group" id="password-repeat-group" style="display: none;">
+                    <input type="password" id="password-repeat" placeholder="Repeat Password" />
+                </div>
+                <button type="submit" id="auth-submit">Login</button>
+                <p id="auth-toggle">
+                    Don't have an account? <span id="toggle-register">Register</span>
+                </p>
+            </form>
+        </div>
     </div>
 
     <!-- Chat Section -->
-    <div id="chat-container">
-        <h2>Chat</h2>
+    <div id="chat-container" style="display: none;">
         <div id="chat"></div>
         <div id="chat-input">
             <input type="text" id="message" placeholder="Type a message..." />

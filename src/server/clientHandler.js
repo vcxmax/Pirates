@@ -41,7 +41,7 @@ class ClientHandler {
                 const messageId = jsonMessage.id;
                 const messageHandler = MessageRegister.getInstance().getMessage(messageId);
                 if (messageHandler) {
-                    messageHandler.read(jsonMessage);
+                    messageHandler.read(jsonMessage, this.server, this);
                 } else {
                     console.error('No handler found for message ID:', messageId);
                 }
