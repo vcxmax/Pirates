@@ -23,16 +23,44 @@ class Chat {
     handleSendMessage() {
         const message = this.messageInput.value.trim();
         if (message) {
-            this.client.sendMessage({ id: MessageChat.id, username: this.client.username, text: message });
+            const messageObject = {
+                id: MessageChat.id, // Message type
+                username: this.client.username,
+                text: message,
+            };
+
+            this.client.sendMessage(messageObject); // Send as JSON
             this.messageInput.value = ''; // Clear the input field
         }
     }
 
+    // Append a message to the chat
     appendMessage(username, text) {
         const messageElement = document.createElement('div');
-        messageElement.textContent = username + ': ' + text;
+        messageElement.classList.add('message');
+
+        // Add username styling
+        const usernameElement = document.createElement('span');
+        usernameElement.classList.add('username');
+        usernameElement.textContent = username;
+
+        // Add message text
+        const textElement = document.createElement('span');
+        textElement.textContent = text;
+
+        // Check if the message is from the client
+        if (username === this.client.username) {
+            messageElement.classList.add('client');
+        } else {
+            messageElement.classList.add('other');
+        }
+
+        messageElement.appendChild(usernameElement);
+        messageElement.appendChild(textElement);
         this.chat.appendChild(messageElement);
-        this.chat.scrollTop = this.chat.scrollHeight; // Auto-scroll to the latest message
+
+        // Auto-scroll to the latest message
+        this.chat.scrollTop = this.chat.scrollHeight;
     }
 }
 
