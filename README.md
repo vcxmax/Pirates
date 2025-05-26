@@ -32,11 +32,7 @@ multiplayer-game
    ```
    git clone <repository-url>
    ```
-2. Navigate to the project directory:
-   ```
-   cd multiplayer-game
-   ```
-3. Install the dependencies:
+2. Install the dependencies:
    ```
    npm install
    ```

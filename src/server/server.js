@@ -4,6 +4,7 @@ import http from 'http';
 import WebSocket from 'ws';
 import ClientHandler from './clientHandler.js';
 import AuthHandler from './authHandler.js';
+import readline from 'readline';
 
 class Server {
     constructor(port = 3000, host = '0.0.0.0') {
@@ -15,7 +16,6 @@ class Server {
         this.wss = new WebSocket.Server({ server: this.server });
 
         this.authHandler = new AuthHandler();
-        this.authHandler.initialize();
 
         this.setupMiddleware();
         this.handleConnections();
@@ -37,14 +37,17 @@ class Server {
     }
 
     // Start the server
-    start() {
+    async start() {
+        await this.authHandler.initialize();
         this.server.listen(this.port, this.host, () => {
             console.log(`Server is running on http://${this.host}:${this.port}`);
         });
     }
 
     // Close the server
-    close() {
+    async close() {
+        console.log("Credentials before saving:", this.authHandler.credentials);
+        await this.authHandler.saveCredentials();
         this.wss.close(() => {
             console.log('WebSocket server closed');
         });
@@ -54,7 +57,32 @@ class Server {
     }
 
     commandLine() {
-        // listen to command line input
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout,
+            prompt: '> '
+        });
+
+        rl.prompt();
+
+        rl.on('line', async (line) => {
+            const input = line.trim();
+            switch (input) {
+                case 'exit':
+                case 'quit':
+                    console.log('Shutting down server...');
+                    await this.close(); // <-- Now this works!
+                    rl.close();
+                    break;
+                default:
+                    console.log(`Unknown command: ${input}`);
+                    rl.prompt();
+            }
+        });
+
+        rl.on('close', () => {
+            process.exit(0);
+        });
     }
 }
 
@@ -62,3 +90,4 @@ class Server {
 // eslint-disable-next-line no-undef
 const server = new Server(process.env.PORT || 3000, '0.0.0.0');
 server.start();
+server.commandLine();
